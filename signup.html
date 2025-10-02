@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Hire Signup</title>
+<style>
+  /* Reset & Base */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(120deg,#e0e7ff,#f5f7fb,#e0f7fa);
+    background-size: 400% 400%;
+    animation: gradientMove 20s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    color:#333;
+    display:flex;
+    min-height:100vh;
+    flex-direction: column;
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1), color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  a { text-decoration:none; color:inherit; }
+  @keyframes gradientMove {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+
+  /* Header */
+  header {
+    position:fixed; top:0; left:0; right:0; height:70px;
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.7);
+    box-shadow:0 4px 25px rgba(0,0,0,0.1);
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 20px; z-index:1000;
+    border-bottom:1px solid rgba(255,255,255,0.3);
+  }
+  .logo { 
+    display:flex; align-items:center; 
+    font-size:1.7rem; 
+    font-weight:800; 
+    background: linear-gradient(90deg,#4f46e5,#3b82f6,#9333ea);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .header-actions { display:flex; align-items:center; gap:15px; }
+  
+  .mode-toggle { font-size:1.5rem; cursor:pointer; transition: transform 0.3s ease; }
+  .mode-toggle:hover { transform:rotate(20deg) scale(1.3); }
+
+  /* Main Content */
+  main {
+    margin-top: 70px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  /* Signup Form */
+  .signup-container {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(18px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .signup-container:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 12px 35px rgba(79,70,229,0.45);
+  }
+
+  .signup-header {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .signup-header h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(90deg,#4f46e5,#3b82f6,#9333ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 3px 10px rgba(79,70,229,0.35);
+    margin-bottom: 12px;
+  }
+  .signup-header p {
+    color: #666;
+    font-size: 1.05rem;
+  }
+
+  .form-group {
+    margin-bottom: 22px;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 15px;
+  }
+
+  .form-row .form-group {
+    flex: 1;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.9);
+    font-size: 17px;
+    transition: all 0.4s ease;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 4px rgba(79,70,229,0.35);
+  }
+
+  .terms {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+
+  .terms input {
+    margin-top: 3px;
+    accent-color: #4f46e5;
+  }
+
+  .terms a {
+    color: #4f46e5;
+    font-weight: 500;
+  }
+
+  .terms a:hover {
+    text-decoration: underline;
+  }
+
+  .signup-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(90deg,#4f46e5,#3b82f6,#06b6d4);
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 17px;
+    letter-spacing: 0.5px;
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+
+  .signup-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(59,130,246,0.6);
+    background: linear-gradient(90deg,#3730a3,#2563eb,#0891b2); /* Darker gradient on hover */
+  }
+
+  .signup-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.7s ease;
+  }
+
+  .signup-btn:hover::before {
+    transform: translateX(100%);
+  }
+
+  .error-message {
+    color: #ef4444;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+  }
+
+  .success-message {
+    color: #10b981;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+  }
+
+  .gmail-info {
+    background: rgba(79,70,229,0.08);
+    border: 1px solid rgba(79,70,229,0.25);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 25px;
+    font-size: 15px;
+    color: #4f46e5;
+    line-height: 1.5;
+  }
+
+  .password-requirements {
+    background: rgba(79,70,229,0.05);
+    border: 1px solid rgba(79,70,229,0.2);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 10px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  .requirement {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+    color: #666;
+  }
+
+  .requirement.valid {
+    color: #10b981;
+  }
+
+  .requirement.invalid {
+    color: #ef4444;
+  }
+
+  .requirement-icon {
+    margin-right: 8px;
+    font-size: 12px;
+  }
+
+  .password-strength {
+    margin-top: 8px;
+  }
+
+  .strength-bar {
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 5px;
+  }
+
+  .strength-fill {
+    height: 100%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+
+  .strength-weak { background: #ef4444; width: 25%; }
+  .strength-fair { background: #f59e0b; width: 50%; }
+  .strength-good { background: #3b82f6; width: 75%; }
+  .strength-strong { background: #10b981; width: 100%; }
+
+  .login-link {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .login-link a {
+    color: #4f46e5;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 20px;
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  }
+
+  .footer-bottom {
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  /* Dark Mode */
+  body.dark {
+    background: linear-gradient(120deg,#0f172a,#1e293b,#0f172a);
+    background-size: 300% 300%;
+    animation: gradientMove 20s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    color: #eee;
+  }
+
+  body.dark header,
+  body.dark .signup-container,
+  body.dark footer {
+    background: rgba(30,41,59,0.8);
+    backdrop-filter: blur(15px);
+    color: #eee;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  body.dark .form-group input,
+  body.dark .form-group select {
+    background: rgba(30,41,59,0.9);
+    border-color: rgba(255,255,255,0.15);
+    color: #eee;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  body.dark .form-group input:focus,
+  body.dark .form-group select:focus {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 4px rgba(14,165,233,0.35);
+  }
+
+  body.dark .error-message {
+    color: #f87171;
+  }
+
+  body.dark .success-message {
+    color: #34d399;
+  }
+
+  body.dark .gmail-info {
+    background: rgba(14,165,233,0.12);
+    border-color: rgba(14,165,233,0.35);
+    color: #0ea5e9;
+  }
+
+  body.dark .password-requirements {
+    background: rgba(14,165,233,0.05);
+    border-color: rgba(14,165,233,0.2);
+  }
+
+  body.dark .requirement {
+    color: #94a3b8;
+  }
+
+  body.dark .requirement.valid {
+    color: #34d399;
+  }
+
+  body.dark .requirement.invalid {
+    color: #f87171;
+  }
+
+  body.dark .strength-bar {
+    background: rgba(255,255,255,0.1);
+  }
+  
+  body.dark .signup-btn:hover {
+    box-shadow: 0 10px 30px rgba(14,165,233,0.6);
+    background: linear-gradient(90deg,#0ea5e9,#6366f1,#8b5cf6);
+  }
+
+  body.dark .terms a,
+  body.dark .terms a,
+  body.dark .login-link a {
+    color: #0ea5e9;
+  }
+
+  body.dark .signup-btn {
+    box-shadow: 0 5px 20px rgba(14,165,233,0.35);
+  }
+  body.dark .signup-btn:hover {
+    box-shadow: 0 10px 30px rgba(14,165,233,0.6);
+    background: linear-gradient(90deg,#0ea5e9,#6366f1,#8b5cf6);
+  }
+
+  /* Responsive */
+  @media(max-width: 768px) {
+    .signup-container {
+      padding: 25px;
+    }
+    
+    .form-row {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <a href="dashboard.html" class="logo" style="cursor: pointer;">🎓 <span>Campus Hire</span></a>
+  <div class="header-actions">
+    <div class="mode-toggle" id="modeToggle">☀️</div>
+  </div>
+</header>
+
+<!-- Main -->
+<main>
+  <div class="signup-container">
+    <div class="signup-header">
+      <h2>Create Account</h2>
+      <p>Join Campus Hire with your Gmail account.</p>
+    </div>
+    
+    <div class="gmail-info">
+      <strong>📧 Gmail Only:</strong> Please use your Gmail address (@gmail.com) to register.
+    </div>
+    
+    <form id="signupForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" placeholder="Enter your first name" required>
+          <div class="error-message" id="firstNameError"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" placeholder="Enter your last name" required>
+          <div class="error-message" id="lastNameError"></div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Gmail Address</label>
+        <input type="email" id="email" placeholder="yourname@gmail.com" required>
+        <div class="error-message" id="emailError"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Create a strong password" required>
+        <div class="error-message" id="passwordError"></div>
+        <div class="password-requirements" id="passwordRequirements" style="display: none;">
+          <div class="requirement" id="lengthReq">
+            <span class="requirement-icon">✗</span>
+            At least 8 characters
+          </div>
+          <div class="requirement" id="uppercaseReq">
+            <span class="requirement-icon">✗</span>
+            One uppercase letter
+          </div>
+          <div class="requirement" id="lowercaseReq">
+            <span class="requirement-icon">✗</span>
+            One lowercase letter
+          </div>
+          <div class="requirement" id="numberReq">
+            <span class="requirement-icon">✗</span>
+            One number
+          </div>
+          <div class="requirement" id="specialReq">
+            <span class="requirement-icon">✗</span>
+            One special character
+          </div>
+          <div class="password-strength">
+            <div>Password Strength: <span id="strengthText">Weak</span></div>
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+        <div class="error-message" id="confirmPasswordError"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="role">I am a</label>
+        <select id="role" required>
+          <option value="" disabled selected>Select your role</option>
+          <option value="student">Student</option>
+          <option value="graduate">Recent Graduate</option>
+          <option value="professional">Professional</option>
+          <option value="recruiter">Recruiter</option>
+        </select>
+        <div class="error-message" id="roleError"></div>
+      </div>
+      
+      <div class="terms">
+        <input type="checkbox" id="terms" required class="accent-checkbox">
+        <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
+        <div class="error-message" id="termsError"></div>
+      </div>
+      
+      <button type="submit" class="signup-btn">Create Account</button>
+    </form>
+    
+    <div class="login-link">
+      <p>Already have an account? <a href="login.html">Log in</a></p>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-links">
+    <a href="#">About</a>
+    <a href="#">Resources</a>
+    <a href="#">Support</a>
+    <a href="#">Legal</a>
+  </div>
+  <div class="footer-bottom">
+    © 2025 Campus Hire. All rights reserved.
+  </div>
+</footer>
+
+<script src="dark-mode.js"></script>
+<script>
+  // Gmail validation function
+  function validateGmail(email) {
+    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    return gmailRegex.test(email);
+  }
+
+  // Password validation functions
+  function validatePassword(password) {
+    const requirements = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /\d/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    };
+    return requirements;
+  }
+
+  function updatePasswordStrength(password) {
+    const requirements = validatePassword(password);
+    const score = Object.values(requirements).filter(Boolean).length;
+    
+    const strengthText = document.getElementById('strengthText');
+    const strengthFill = document.getElementById('strengthFill');
+    
+    let strength = 'Weak';
+    let color = '#ef4444';
+    let width = '25%';
+    
+    if (score >= 5) {
+      strength = 'Strong';
+      color = '#10b981';
+      width = '100%';
+    } else if (score >= 4) {
+      strength = 'Good';
+      color = '#3b82f6';
+      width = '75%';
+    } else if (score >= 2) {
+      strength = 'Fair';
+      color = '#f59e0b';
+      width = '50%';
+    }
+    
+    strengthText.textContent = strength;
+    strengthFill.style.width = width;
+    strengthFill.style.backgroundColor = color;
+    
+    return requirements;
+  }
+
+  function updateRequirements(requirements) {
+    const reqElements = {
+      lengthReq: requirements.length,
+      uppercaseReq: requirements.uppercase,
+      lowercaseReq: requirements.lowercase,
+      numberReq: requirements.number,
+      specialReq: requirements.special
+    };
+    
+    Object.keys(reqElements).forEach(id => {
+      const element = document.getElementById(id);
+      const icon = element.querySelector('.requirement-icon');
+      
+      if (reqElements[id]) {
+        element.classList.remove('invalid');
+        element.classList.add('valid');
+        icon.textContent = '✓';
+      } else {
+        element.classList.remove('valid');
+        element.classList.add('invalid');
+        icon.textContent = '✗';
+      }
+    });
+  }
+
+  function showError(elementId, message) {
+    const errorElement = document.getElementById(elementId);
+    const inputElement = document.getElementById(elementId.replace('Error', ''));
+    
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+    inputElement.style.borderColor = '#ef4444';
+  }
+
+  function clearError(elementId) {
+    const errorElement = document.getElementById(elementId);
+    const inputElement = document.getElementById(elementId.replace('Error', ''));
+    
+    errorElement.textContent = '';
+    errorElement.style.display = 'none';
+    inputElement.style.borderColor = '';
+  }
+
+  // Real-time validation
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const confirmPasswordInput = document.getElementById('confirmPassword');
+  const passwordRequirements = document.getElementById('passwordRequirements');
+
+  emailInput.addEventListener('blur', function() {
+    const email = this.value.trim();
+    if (email && !validateGmail(email)) {
+      showError('emailError', 'Please enter a valid Gmail address (@gmail.com)');
+    } else {
+      clearError('emailError');
+    }
+  });
+
+  emailInput.addEventListener("focus", () => {
+    clearError('emailError');
+  });
+
+  passwordInput.addEventListener("focus", () => {
+    passwordRequirements.style.display = 'block';
+    clearError('passwordError');
+  });
+
+  passwordInput.addEventListener("blur", () => {
+    if (passwordInput.value.length === 0) {
+      passwordRequirements.style.display = 'none';
+    }
+  });
+
+  confirmPasswordInput.addEventListener("focus", () => {
+    clearError('confirmPasswordError');
+  });
+
+  document.getElementById('firstName').addEventListener("focus", () => clearError('firstNameError'));
+  document.getElementById('lastName').addEventListener("focus", () => clearError('lastNameError'));
+  document.getElementById('role').addEventListener("focus", () => clearError('roleError'));
+  document.getElementById('terms').addEventListener("focus", () => clearError('termsError'));
+  passwordInput.addEventListener('input', function() {
+    const password = this.value;
+    
+    if (password.length > 0) {
+      passwordRequirements.style.display = 'block';
+      const requirements = updatePasswordStrength(password);
+      updateRequirements(requirements);
+    } else {
+      passwordRequirements.style.display = 'none';
+    }
+  });
+
+  confirmPasswordInput.addEventListener('blur', function() {
+    const password = passwordInput.value;
+    const confirmPassword = this.value;
+    
+    if (confirmPassword && password !== confirmPassword) {
+      showError('confirmPasswordError', 'Passwords do not match');
+    } else {
+      clearError('confirmPasswordError');
+    }
+  });
+  
+  // Form Validation
+  const signupForm = document.getElementById("signupForm");
+  signupForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    
+    let isValid = true;
+    
+    // Clear all previous errors
+    ['firstNameError', 'lastNameError', 'emailError', 'passwordError', 'confirmPasswordError', 'roleError', 'termsError'].forEach(clearError);
+    
+    const firstName = document.getElementById("firstName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const role = document.getElementById("role").value;
+    const terms = document.getElementById("terms").checked;
+    
+    // Validate first name
+    if (!firstName) {
+      showError('firstNameError', 'First name is required');
+      isValid = false;
+    }
+    
+    // Validate last name
+    if (!lastName) {
+      showError('lastNameError', 'Last name is required');
+      isValid = false;
+    }
+    
+    // Validate Gmail
+    if (!email) {
+      showError('emailError', 'Gmail address is required');
+      isValid = false;
+    } else if (!validateGmail(email)) {
+      showError('emailError', 'Please enter a valid Gmail address (@gmail.com)');
+      isValid = false;
+    }
+    
+    // Validate password
+    if (!password) {
+      showError('passwordError', 'Password is required');
+      isValid = false;
+    } else {
+      const requirements = validatePassword(password);
+      const allMet = Object.values(requirements).every(Boolean);
+      
+      if (!allMet) {
+        showError('passwordError', 'Password must meet all requirements above');
+        isValid = false;
+      }
+    }
+    
+    // Validate confirm password
+    if (!confirmPassword) {
+      showError('confirmPasswordError', 'Please confirm your password');
+      isValid = false;
+    } else if (password !== confirmPassword) {
+      showError('confirmPasswordError', 'Passwords do not match');
+      isValid = false;
+    }
+    
+    // Validate role
+    if (!role) {
+      showError('roleError', 'Please select your role');
+      isValid = false;
+    }
+    
+    // Validate terms
+    if (!terms) {
+      showError('termsError', 'You must agree to the Terms of Service and Privacy Policy');
+      isValid = false;
+    }
+    
+    if (isValid) {
+      alert("Account created successfully! Redirecting to login...");
+      window.location.href = "login.html";
+    }
+  });
+</script>
+</body>
+</html>

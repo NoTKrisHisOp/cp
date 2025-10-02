@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Hire Dashboard</title>
+<style>
+  /* Reset & Base */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(120deg,#e0e7ff,#f5f7fb,#e0f7fa);
+    background-size: 400% 400%;
+    animation: gradientMove 18s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    color:#333;
+    display:flex;
+    min-height:100vh;
+    flex-direction: column;
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1), color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  a { text-decoration:none; color:inherit; }
+  @keyframes gradientMove {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+
+  /* Header */
+  header {
+    position:fixed; top:0; left:0; right:0; height:70px;
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.6);
+    box-shadow:0 4px 20px rgba(0,0,0,0.15);
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 20px; z-index:1000;
+    border-bottom:1px solid rgba(255,255,255,0.3);
+  }
+  .logo { 
+    display:flex; align-items:center; 
+    font-size:1.7rem; 
+    font-weight:800; 
+    background: linear-gradient(90deg,#4f46e5,#3b82f6,#9333ea);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .header-actions { display:flex; align-items:center; gap:15px; }
+
+  /* Search Component */
+  .header-search-wrapper {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 20px;
+  }
+
+  .search-component {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 25px;
+    padding: 8px 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+  }
+
+  .search-component:focus-within {
+    box-shadow: 0 4px 15px rgba(79,70,229,0.2);
+    background: #fff;
+  }
+
+  .search-icon {
+    color: #777;
+    margin-right: 10px;
+    font-size: 1.1rem;
+  }
+
+  .search-input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    font-size: 1rem;
+    background: transparent;
+    color: #333;
+  }
+
+  .search-input::placeholder {
+    color: #999;
+  }
+
+  body.dark .search-component {
+    background: rgba(45,55,72,0.8);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+
+  body.dark .search-component:focus-within {
+    background: #1e293b;
+    box-shadow: 0 4px 15px rgba(14,165,233,0.3);
+  }
+
+  body.dark .search-icon {
+    color: #bbb;
+  }
+
+  body.dark .search-input {
+    color: #eee;
+  }
+
+  body.dark .search-input::placeholder {
+    color: #888;
+  }
+
+  /* Premium Buttons */
+.login-btn {
+  padding: 12px 26px;
+  border: none;
+  border-radius: 30px;
+  background: #ffffff; /* plain white */
+  color: #000000;      /* black text */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* soft shadow */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Optional subtle shine effect */
+.login-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.login-btn:hover::before {
+  transform: translateX(100%);
+}
+
+.login-btn:hover {
+  transform: scale(1.05);           /* smooth enlargement */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25); /* slightly deeper shadow */
+  filter: brightness(1.05);          /* subtle brightness effect */
+}
+
+  .mode-toggle { font-size:1.5rem; cursor:pointer; transition: transform 0.3s ease; }
+  .mode-toggle:hover { transform:rotate(20deg) scale(1.3); }
+
+  /* Sidebar */
+  .sidebar {
+    position:fixed; top:70px; left:0;
+    width:220px; height:calc(100% - 70px);
+    backdrop-filter: blur(14px);
+    background:rgba(255,255,255,0.5);
+    border-right:1px solid rgba(255,255,255,0.3);
+    padding:20px;
+    overflow-y:auto;
+    transition:transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+  }
+  .sidebar ul { list-style:none; }
+  .sidebar li {
+    padding:12px 14px;
+    margin:8px 0;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:500;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position:relative;
+    overflow: hidden;
+  }
+  .sidebar li:hover {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6, #06b6d4);
+    color:#fff;
+    box-shadow:0 4px 15px rgba(79,70,229,0.6);
+    transform:translateX(5px);
+  }
+  .sidebar li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    z-index: 1;
+  }
+  .sidebar li:hover::before {
+    transform: translateX(100%);
+  }
+
+  /* Main */
+  main {
+    margin-top:70px;
+    margin-left:220px;
+    padding:40px;
+    flex:1;
+  }
+  h2 { 
+    margin:20px 0; 
+    font-weight:700;
+    background:linear-gradient(90deg,#4f46e5,#3b82f6,#9333ea);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 2px 8px rgba(79,70,229,0.3);
+  }
+
+  /* Prepare Card */
+  .prepare-card {
+    background:rgba(255,255,255,0.7);
+    backdrop-filter:blur(14px);
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 6px 25px rgba(0,0,0,0.15);
+    flex: 1; /* Allow it to grow */
+    min-width: 280px; /* Ensure it doesn't get too small */
+    max-width: 400px; /* Limit its max width */
+    transition: all 0.4s ease;
+  }
+  .prepare-card:hover {
+    transform:translateY(-6px) scale(1.02);
+    box-shadow:0 10px 30px rgba(79,70,229,0.4);
+  }
+
+  /* Main Top Section for Cards */
+  .main-top-section {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 25px; /* Consistent with .cards gap */
+    margin-top: 20px; /* Adjust margin as needed */
+  }
+
+  /* Upcoming Events Card */
+  .upcoming-events-card {
+    background:rgba(255,255,255,0.7);
+    backdrop-filter:blur(12px);
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 6px 22px rgba(0,0,0,0.1);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor:pointer;
+    position: relative;
+    overflow: hidden;
+    flex: 1; /* Allow it to grow */
+    min-width: 280px; /* Ensure it doesn't get too small */
+    max-width: 400px; /* Limit its max width */
+  }
+  .upcoming-events-card:hover {
+    transform:translateY(-10px) scale(1.06); /* Increased lift and scale */
+    box-shadow:0 18px 35px rgba(79,70,229,0.6); /* More prominent shadow */
+
+    color:#fff;
+  }
+  .upcoming-events-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    background:linear-gradient(90deg,#4f46e5,#3b82f6,#9333ea);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .upcoming-events-card p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+  .upcoming-events-card .view-btn {
+    padding:10px 20px;
+    background:linear-gradient(90deg,#4f46e5,#3b82f6);
+    color:#fff; font-weight:600;
+    border:none; border-radius:20px;
+    cursor:pointer;
+    transition: all 0.3s ease;
+  }
+  .upcoming-events-card .view-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:0 6px 15px rgba(59,130,246,0.4);
+  }
+
+  .progress-container {
+    background:rgba(200,200,200,0.4);
+    border-radius:12px;
+    height:22px;
+    overflow:hidden;
+    margin:18px 0;
+  }
+  .progress-bar {
+    height:100%; width:0%;
+    background:linear-gradient(90deg,#4f46e5,#3b82f6,#06b6d4);
+    border-radius:12px;
+    transition: width 0.5s ease;
+  }
+  .start-btn {
+    padding:12px 22px;
+    background:linear-gradient(90deg,#4f46e5,#3b82f6,#06b6d4);
+    color:#fff; font-weight:600;
+    border:none; border-radius:25px;
+    cursor:pointer;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position:relative; overflow:hidden;
+  }
+  .start-btn:hover { 
+    transform:translateY(-3px) scale(1.05);
+    box-shadow:0 8px 25px rgba(59,130,246,0.5);
+    background:linear-gradient(90deg,#3730a3,#2563eb,#0891b2);
+  }
+  .start-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  .start-btn:hover::before {
+    transform: translateX(100%);
+  }
+
+  /* Cards Section */
+  .cards {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+    margin-top:35px;
+  }
+  .card {
+    background:rgba(255,255,255,0.7);
+    backdrop-filter:blur(12px);
+    padding:22px;
+    border-radius:18px;
+    box-shadow:0 6px 22px rgba(0,0,0,0.1);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor:pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform:translateY(-8px) scale(1.05);
+    box-shadow:0 15px 30px rgba(79,70,229,0.5);
+    background: linear-gradient(135deg, #4f46e5, #3b82f6, #06b6d4);
+    color:#fff;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .card:hover::before {
+    transform: translateX(100%);
+  }
+
+  /* Footer */
+  footer {
+    position: relative;
+    text-align: center;
+    padding: 90px 20px 45px;
+    backdrop-filter:blur(12px);
+    background:rgba(255,255,255,0.7);
+    box-shadow:0 -4px 15px rgba(0,0,0,0.1);
+  }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+  }
+  .footer-links a {
+    font-size:1rem; font-weight:600;
+    color:#444; position:relative;
+    transition: all 0.3s ease;
+  }
+  .footer-links a::after {
+    content:"";
+    position:absolute; bottom:-5px; left:0;
+    width:100%; height:3px;
+    background:linear-gradient(90deg,#4f46e5,#3b82f6,#06b6d4);
+    border-radius:2px;
+    transform:scaleX(0);
+    transform-origin:right;
+    transition:transform 0.3s ease;
+  }
+  .footer-links a:hover::after {
+    transform:scaleX(1);
+    transform-origin:left;
+  }
+  .footer-links a:hover {
+    color:#4f46e5;
+    text-shadow:0px 0px 12px rgba(79,70,229,0.6);
+  }
+  .footer-bottom {
+    margin-top:130px;
+    font-size:0.9rem;
+    color:#666;
+  }
+  .prep-box {
+  background: linear-gradient(135deg, #eef2ff, #e0f7fa);
+  border-radius: 16px;
+  padding: 25px;
+  margin-top: 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  transition: 0.3s ease-in-out;
+}
+
+.prep-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+}
+
+.prep-box h2 {
+  color: #3b82f6;
+  margin-bottom: 12px;
+  font-size: 22px;
+}
+
+.prep-box p {
+  color: #444;
+  font-size: 15px;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.prep-box ul {
+  margin: 10px 0 15px 20px;
+  color: #333;
+  font-size: 15px;
+}
+
+.prep-box li {
+  margin-bottom: 6px;
+}
+
+.explore-btn {
+  background: linear-gradient(90deg, #6366f1, #3b82f6);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.explore-btn:hover {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+}
+
+
+  /* Dark Mode */
+  body.dark {
+    background:linear-gradient(120deg,#0f172a,#1e293b,#0f172a);
+    background-size:300% 300%;
+    animation:gradientMove 20s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    color:#eee;
+  }
+  body.dark header, 
+  body.dark .sidebar, 
+  body.dark .prepare-card,
+  body.dark .card,
+  body.dark .upcoming-events-card, /* Add dark mode for new card */
+  body.dark footer {
+    background:rgba(30,41,59,0.7);
+    backdrop-filter:blur(12px);
+    color:#eee;
+    box-shadow:0 6px 20px rgba(0,0,0,0.6);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  body.dark .start-btn {
+    box-shadow: 0 4px 15px rgba(14,165,233,0.3);
+  }
+  
+  body.dark .start-btn:hover {
+    box-shadow: 0 8px 25px rgba(14,165,233,0.5);
+  }
+  
+  body.dark .explore-btn {
+    box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+  }
+  
+  body.dark .explore-btn:hover {
+    box-shadow: 0 8px 25px rgba(99,102,241,0.5);
+  }
+
+  /* Dark mode for new card elements */
+  body.dark .upcoming-events-card:hover {
+    background:linear-gradient(135deg,#0ea5e9,#6366f1,#8b5cf6);
+    box-shadow:0 18px 35px rgba(14,165,233,0.6); /* Dark mode shadow adjustment */
+  }
+  body.dark .upcoming-events-card h3 {
+    background:linear-gradient(90deg,#0ea5e9,#6366f1,#8b5cf6);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  body.dark .upcoming-events-card p { color: #ccc; }
+  body.dark .upcoming-events-card .view-btn {
+    background:linear-gradient(90deg,#0ea5e9,#6366f1);
+    box-shadow: 0 4px 15px rgba(14,165,233,0.3);
+  }
+  body.dark .upcoming-events-card .view-btn:hover {
+    box-shadow: 0 8px 25px rgba(14,165,233,0.5);
+  }
+
+  body.dark .progress-bar { background:linear-gradient(90deg,#0ea5e9,#6366f1,#8b5cf6); }
+  body.dark .card:hover { background:linear-gradient(135deg,#0ea5e9,#6366f1,#8b5cf6); }
+  body.dark .sidebar li:hover { background:linear-gradient(135deg,#0ea5e9,#6366f1,#8b5cf6); }
+  body.dark .footer-links a { color:#eee; } /* Make footer links visible in dark mode */
+  body.dark .footer-links a::after { background:linear-gradient(90deg,#0ea5e9,#6366f1,#8b5cf6); }
+  body.dark .footer-links a:hover { color:#0ea5e9; text-shadow:0 0 14px rgba(14,165,233,0.8); }
+  body.dark .footer-bottom { color:#bbb; } /* Make footer bottom text visible in dark mode */
+
+/* Floating Chat Button Styles */
+#chatFloatingBtn {
+  position: fixed;
+  right: 32px;
+  bottom: 70px;
+  width: 55px; /* Slightly larger */
+  height: 55px; /* Slightly larger */
+
+/* Floating Chat Button Styles */
+#chatFloatingBtn {
+  position: fixed;
+  right: 32px;
+  bottom: 70px;
+  width: 55px; /* Slightly larger */
+  height: 55px; /* Slightly larger */
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f46e5, #3b82f6); /* Gradient background */
+  color: #fff;
+  border: none;
+  box-shadow: 0 6px 20px rgba(79,70,229,0.3); /* More prominent shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+  overflow: hidden; /* Keep overflow hidden for inner effects */
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother transition */
+}
+#chatFloatingBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  z-index: 1;
+}
+#chatFloatingBtn:hover::before {
+  transform: translateX(100%);
+}
+#chatFloatingBtn:hover {
+  transform: translateY(-5px) scale(1.1); /* Lift and scale more on hover */
+  box-shadow: 0 15px 30px rgba(79,70,229,0.5); /* Deeper shadow on hover */
+  background: linear-gradient(135deg, #3b82f6, #06b6d4); /* Change gradient on hover */
+}
+#chatFloatingBtn span {
+  position: relative;
+  z-index: 2; /* Ensure text is above the ::before pseudo-element */
+  font-weight: 700; /* Bolder text */
+  font-size: 1.2rem; /* Slightly larger text */
+  letter-spacing: 1.5px; /* Increased letter spacing */
+  transition: color 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+#chatFloatingBtn:hover span {
+  color: #fff; /* Ensure text remains white or bright on hover */
+}
+
+/* Dark mode adjustments for chat button */
+body.dark #chatFloatingBtn {
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  box-shadow: 0 6px 20px rgba(14,165,233,0.3);
+}
+body.dark #chatFloatingBtn:hover {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  box-shadow: 0 15px 30px rgba(14,165,233,0.5);
+}
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f46e5, #3b82f6); /* Gradient background */
+  color: #fff;
+  border: none;
+  box-shadow: 0 6px 20px rgba(79,70,229,0.3); /* More prominent shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+  overflow: hidden; /* Keep overflow hidden for inner effects */
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother transition */
+}
+#chatFloatingBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  z-index: 1;
+}
+#chatFloatingBtn:hover::before {
+  transform: translateX(100%);
+}
+#chatFloatingBtn:hover {
+  transform: translateY(-5px) scale(1.1); /* Lift and scale more on hover */
+  box-shadow: 0 15px 30px rgba(79,70,229,0.5); /* Deeper shadow on hover */
+  background: linear-gradient(135deg, #3b82f6, #06b6d4); /* Change gradient on hover */
+}
+#chatFloatingBtn span {
+  position: relative;
+  z-index: 2; /* Ensure text is above the ::before pseudo-element */
+  font-weight: 700; /* Bolder text */
+  font-size: 1.2rem; /* Slightly larger text */
+  letter-spacing: 1.5px; /* Increased letter spacing */
+  transition: color 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+#chatFloatingBtn:hover span {
+  color: #fff; /* Ensure text remains white or bright on hover */
+}
+
+/* Dark mode adjustments for chat button */
+body.dark #chatFloatingBtn {
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  box-shadow: 0 6px 20px rgba(14,165,233,0.3);
+}
+body.dark #chatFloatingBtn:hover {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  box-shadow: 0 15px 30px rgba(14,165,233,0.5);
+}
+
+  /* Responsive */
+  @media(max-width:768px){
+    .sidebar { transform:translateX(-100%); }
+    .sidebar.active { transform:translateX(0); }
+    main { margin-left:0; }
+    .footer-links { flex-wrap: wrap; gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="dashboard.html" class="logo" style="text-decoration: none;">🎓 <span>Campus Hire</span></a>
+  <div class="header-search-wrapper">
+    <div class="search-component">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="dashboardSearchInput" placeholder="Searching..." autocomplete="off" />
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="login-btn" id="dashboardLoginBtn">
+      Login
+    </button>
+    <div class="mode-toggle" id="modeToggle">☀️</div>
+  </div>
+</header>
+
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <ul>
+    <li>🏠 Campus Placement</li>
+    <li>📘 Aptitude</li>
+    <li>💻 Coding sheets for Placement</li>
+    <li>📄 Resume Builder & checker</li>
+    <li>🎤 Mock Interviews with ai</li>
+    <li>📅 resources</li>
+    <li>👤 User dashboard </li>
+    
+
+
+  </ul>
+</aside>
+
+<!-- Main -->
+<main>
+  <h2>Welcome, Student 👋</h2>
+
+  <div class="main-top-section">
+    <!-- Prepare With Us -->
+    <div class="prepare-card">
+      <h3>Prepare With Us</h3>
+      <p>Your Progress:</p>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <button class="start-btn" id="startBtn">Start Preparing</button>
+    </div>
+
+    <!-- New Upcoming Events Card -->
+    <div class="upcoming-events-card">
+      <h3>Upcoming Events</h3>
+      <p>Stay updated with the latest campus recruitment drives and workshops.</p>
+      <button class="view-btn">View Calendar</button>
+    </div>
+  </div>
+  <!-- Placement Preparation Box -->
+<div class="prep-box">
+  <h2>🚀 Come & Prepare With Us</h2>
+  <p>
+    Get ready for <b>Campus Placements</b>, <b>Off-Campus Drives</b>, and <b>University Exams</b> 
+    with our handpicked resources. We provide:
+  </p>
+  <ul>
+    <li>📘 Aptitude, Coding & Logical Reasoning</li>
+    <li>💼 Mock HR & Technical Interviews</li>
+    <li>📝 Resume Building Guidance</li>
+    <li>🎯 Previous Year University & Company Papers</li>
+  </ul>
+  <button class="explore-btn">Start Exploring</button>
+</div>
+    <h2>Quick Access</h2>
+  <div class="cards">
+    <div class="card"><h3>📘 Aptitude</h3><p>Quantitative, logical, and verbal practice.</p></div>
+    <div class="card"><h3>💻 Coding</h3><p>Solve DSA problems & learn patterns.</p></div>
+    <div class="card"><h3>🎤 Interviews</h3><p>Mock HR & Technical with feedback.</p></div>
+    <div class="card"><h3>📄 Resume</h3><p>Build ATS-friendly professional resumes.</p></div>
+  </div>
+</main>
+
+<!-- Floating Chat Button -->
+<button id="chatFloatingBtn" title="Chat">
+  <span style="font-size: 1.1rem; font-weight: 600; color: #fff; letter-spacing: 1px;">chat</span>
+</button>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-links" style="margin-bottom: 18px;">
+    <a href="#">About</a>
+    <a href="#">Resources</a>
+    <a href="#">Support</a>
+    <a href="#">Legal</a>
+  </div>
+  <div class="footer-bottom">
+    © 2025 Campus Hire. All rights reserved.
+  </div>
+</footer>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const dashboardLoginBtn = document.getElementById('dashboardLoginBtn');
+    const body = document.body;
+
+    if (dashboardLoginBtn) {
+      dashboardLoginBtn.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent default navigation
+        // Since the login box is removed, we can redirect or do nothing.
+        // For now, let's redirect to login.html
+        window.location.href = 'login.html';
+      });
+    }
+  });
+</script>
+<script src="dark-mode.js"></script>
+</body>
+</html>
