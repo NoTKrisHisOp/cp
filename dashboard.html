@@ -1147,13 +1147,13 @@ body.dark .setting-item span {
     const toggleDarkMode = () => {
       body.classList.toggle('dark');
       const isDarkMode = body.classList.contains('dark');
-      localStorage.setItem('darkMode', isDarkMode);
+      sessionStorage.setItem('darkMode', isDarkMode);
       darkModeToggle.checked = isDarkMode;
     };
 
-    // Initialize dark mode based on local storage, defaulting to light mode
+    // Initialize dark mode based on session storage, defaulting to light mode
     const initializeDarkMode = () => {
-      const isDarkMode = localStorage.getItem('darkMode') === 'true';
+      const isDarkMode = sessionStorage.getItem('darkMode') === 'true';
       if (isDarkMode) {
         body.classList.add('dark');
         darkModeToggle.checked = true;
@@ -1165,7 +1165,8 @@ body.dark .setting-item span {
 
     initializeDarkMode();
 
-    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+    // Assuming not logged in by default for server-side, or check a server-set cookie
+    const isLoggedIn = false;
     console.log('Is Logged In:', isLoggedIn); // Debugging line
 
     if (isLoggedIn) {
@@ -1213,7 +1214,7 @@ body.dark .setting-item span {
 
     if (modalLogoutBtn) {
       modalLogoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('loggedIn');
+        sessionStorage.removeItem('loggedIn'); // Remove from session storage
         window.location.href = 'dashboard.html'; // Redirect to dashboard after logout
       });
     }
