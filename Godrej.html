@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Placement Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1e90ff;
+  --bg-dark: #0f172a;
+  --bg-light: #1e293b;
+  --card-bg: #111827;
+  --text-light: #fff;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Roboto',sans-serif; }
+
+/* Body */
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-dark), var(--bg-light));
+  overflow-x: hidden;
+  position: relative;
+  color: var(--text-light);
+}
+
+/* Particle Canvas */
+#particles {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index: -1;
+}
+
+/* Navbar */
+nav {
+  width: 100%;
+  background: rgba(15,23,42,0.95);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+nav .logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: var(--text-light);
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav ul li a:hover {
+  color: var(--primary);
+}
+
+/* Main Content */
+main {
+  max-width: 1200px;
+  margin: 8rem auto 4rem;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+}
+
+main h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 8px rgba(30,144,255,0.6);
+}
+
+/* Vertical Stage List */
+.stage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem; /* reduced by ~10% */
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.stage {
+  width: 340px;       /* increased width (~30%) */
+  padding: 1.5rem;    /* increased padding (~30%) */
+  border-radius: 14px;
+  background: var(--card-bg);
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.4rem;   /* larger text */
+  color: var(--text-light);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  cursor: pointer;
+}
+
+.stage:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 0 20px var(--primary);
+}
+
+.stage.active {
+  border-color: var(--primary);
+  box-shadow: 0 0 22px var(--primary);
+}
+
+/* Responsive */
+@media(max-width:768px){
+  nav ul { display:none; }
+  main h1 { font-size:1.7rem; }
+  .stage { width:250px; font-size:1.1rem; padding:1.2rem; }
+}
+
+@media(max-width:480px){
+  .stage { width:200px; font-size:1rem; padding:1rem; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- Navbar -->
+<nav>
+  <div class="logo">🎓 Campus Hire</div>
+<ul>
+  <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+  <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
+  <li><a href="#"><i class="fas fa-phone"></i> Contact</a></li>
+</ul>
+</nav>
+
+<!-- Main -->
+<main>
+  <h1>Recruitment Process</h1>
+  <div class="stage-list">
+    <div class="stage">Box Test</div>
+    <div class="stage">Aptitude</div>
+    <div class="stage">Interview</div>
+  </div>
+</main>
+
+<script>
+// Particle Network Effect
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particlesArray = [];
+const numberOfParticles = 70;
+
+class Particle {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.size = 2;
+    this.speedX = (Math.random() - 0.5) * 1;
+    this.speedY = (Math.random() - 0.5) * 1;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  }
+  draw() {
+    ctx.fillStyle = "#00fff7";
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function init() {
+  particlesArray = [];
+  for (let i = 0; i < numberOfParticles; i++) {
+    let x = Math.random() * canvas.width;
+    let y = Math.random() * canvas.height;
+    particlesArray.push(new Particle(x, y));
+  }
+}
+
+function connect() {
+  for (let a = 0; a < particlesArray.length; a++) {
+    for (let b = a; b < particlesArray.length; b++) {
+      let dx = particlesArray[a].x - particlesArray[b].x;
+      let dy = particlesArray[a].y - particlesArray[b].y;
+      let distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance < 140) {
+        let opacity = 1 - distance / 140;
+        ctx.strokeStyle = `rgba(30,144,255,${opacity})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particlesArray.forEach(p => { p.update(); p.draw(); });
+  connect();
+  requestAnimationFrame(animate);
+}
+
+init();
+animate();
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  init();
+});
+
+// Click -> activate blue glow
+document.querySelectorAll('.stage').forEach(stage => {
+  stage.addEventListener('click', () => {
+    document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+    stage.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>

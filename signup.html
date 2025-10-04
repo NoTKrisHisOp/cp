@@ -56,6 +56,9 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
+    max-width: 1200px; /* Limit content width on large screens */
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Signup Form */
@@ -386,14 +389,58 @@
   }
 
   /* Responsive */
+  @media(max-width: 992px) {
+    .signup-container {
+      max-width: 450px; /* Slightly smaller on medium screens */
+    }
+  }
+
   @media(max-width: 768px) {
     .signup-container {
       padding: 25px;
+      margin: 20px auto; /* Center on smaller screens */
+      max-width: 400px; /* Adjust max-width for better fit */
     }
     
     .form-row {
       flex-direction: column;
       gap: 0;
+    }
+  }
+
+  @media(max-width: 480px) {
+    .signup-container {
+      padding: 20px;
+      margin: 15px auto; /* Center on smallest screens */
+      max-width: 90%; /* Allow it to take more width on very small screens */
+    }
+    .signup-header h2 {
+      font-size: 1.8rem;
+    }
+    .signup-header p {
+      font-size: 0.9rem;
+    }
+    .form-group label {
+      font-size: 0.9rem;
+    }
+    .form-group input,
+    .form-group select {
+      padding: 10px 12px;
+      font-size: 15px;
+    }
+    .signup-btn {
+      padding: 10px;
+      font-size: 15px;
+    }
+    .gmail-info {
+      padding: 12px;
+      font-size: 14px;
+    }
+    .terms {
+      font-size: 0.85rem;
+    }
+    .login-link p {
+      font-size: 0.9rem;
     }
   }
 </style>

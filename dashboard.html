@@ -127,6 +127,26 @@
   overflow: hidden;
 }
 
+.profile-btn { /* New style for profile button */
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f46e5, #3b82f6);
+  color: #fff;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.profile-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
 /* Optional subtle shine effect */
 .login-btn::before {
   content: '';
@@ -147,8 +167,112 @@
   filter: brightness(1.05);          /* subtle brightness effect */
 }
 
-  .mode-toggle { font-size:1.5rem; cursor:pointer; transition: transform 0.3s ease; }
-  .mode-toggle:hover { transform:rotate(20deg) scale(1.3); }
+/* Settings Button */
+.settings-btn {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 30px;
+  background: #ffffff;
+  color: #000000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.settings-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  filter: brightness(1.05);
+}
+
+body.dark .settings-btn {
+  background: rgba(30,41,59,0.7);
+  color: #eee;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+}
+
+body.dark .settings-btn:hover {
+  background: rgba(30,41,59,0.9);
+  box-shadow: 0 8px 25px rgba(14,165,233,0.5);
+}
+
+  /* The mode-toggle class is now only used within the settings modal */
+  .mode-toggle {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+
+  .mode-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .toggle-label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+  }
+
+  .toggle-label:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+
+  input:checked + .toggle-label {
+    background-color: #2196F3;
+  }
+
+  input:focus + .toggle-label {
+    box-shadow: 0 0 1px #2196F3;
+  }
+
+  input:checked + .toggle-label:before {
+    transform: translateX(26px);
+  }
+
+  .toggle-label:after {
+    content: 'Off';
+    color: #fff;
+    display: block;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 70%; /* Adjusted for better visibility */
+    font-size: 10px;
+    font-family: "Segoe UI", sans-serif;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+  }
+
+  input:checked + .toggle-label:after {
+    content: 'On';
+    left: 30%; /* Adjusted for better visibility */
+    color: #fff;
+  }
 
   /* Sidebar */
   .sidebar {
@@ -201,6 +325,8 @@
     margin-left:220px;
     padding:40px;
     flex:1;
+    max-width: 1200px; /* Limit content width on large screens */
+    margin-right: auto;
   }
   h2 { 
     margin:20px 0; 
@@ -534,67 +660,6 @@
   width: 55px; /* Slightly larger */
   height: 55px; /* Slightly larger */
 
-/* Floating Chat Button Styles */
-#chatFloatingBtn {
-  position: fixed;
-  right: 32px;
-  bottom: 70px;
-  width: 55px; /* Slightly larger */
-  height: 55px; /* Slightly larger */
-  border-radius: 50%;
-  background: linear-gradient(135deg, #4f46e5, #3b82f6); /* Gradient background */
-  color: #fff;
-  border: none;
-  box-shadow: 0 6px 20px rgba(79,70,229,0.3); /* More prominent shadow */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 1001;
-  overflow: hidden; /* Keep overflow hidden for inner effects */
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother transition */
-}
-#chatFloatingBtn::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-  z-index: 1;
-}
-#chatFloatingBtn:hover::before {
-  transform: translateX(100%);
-}
-#chatFloatingBtn:hover {
-  transform: translateY(-5px) scale(1.1); /* Lift and scale more on hover */
-  box-shadow: 0 15px 30px rgba(79,70,229,0.5); /* Deeper shadow on hover */
-  background: linear-gradient(135deg, #3b82f6, #06b6d4); /* Change gradient on hover */
-}
-#chatFloatingBtn span {
-  position: relative;
-  z-index: 2; /* Ensure text is above the ::before pseudo-element */
-  font-weight: 700; /* Bolder text */
-  font-size: 1.2rem; /* Slightly larger text */
-  letter-spacing: 1.5px; /* Increased letter spacing */
-  transition: color 0.3s cubic-bezier(0.4,0,0.2,1);
-}
-#chatFloatingBtn:hover span {
-  color: #fff; /* Ensure text remains white or bright on hover */
-}
-
-/* Dark mode adjustments for chat button */
-body.dark #chatFloatingBtn {
-  background: linear-gradient(135deg, #0ea5e9, #6366f1);
-  box-shadow: 0 6px 20px rgba(14,165,233,0.3);
-}
-body.dark #chatFloatingBtn:hover {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  box-shadow: 0 15px 30px rgba(14,165,233,0.5);
-}
   border-radius: 50%;
   background: linear-gradient(135deg, #4f46e5, #3b82f6); /* Gradient background */
   color: #fff;
@@ -650,13 +715,294 @@ body.dark #chatFloatingBtn:hover {
   box-shadow: 0 15px 30px rgba(14,165,233,0.5);
 }
 
-  /* Responsive */
-  @media(max-width:768px){
-    .sidebar { transform:translateX(-100%); }
-    .sidebar.active { transform:translateX(0); }
-    main { margin-left:0; }
-    .footer-links { flex-wrap: wrap; gap: 1.5rem; }
+/* Settings Modal Styles */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1002; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  backdrop-filter: blur(5px); /* Blur effect for background */
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  animation: fadeIn 0.3s ease-out;
+}
+
+body.dark .modal-content {
+  background-color: #1e293b;
+  color: #eee;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.close-button {
+  color: #aaa;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: #333;
+  text-decoration: none;
+  transform: scale(1.1);
+}
+
+body.dark .close-button {
+  color: #bbb;
+}
+
+body.dark .close-button:hover,
+body.dark .close-button:focus {
+  color: #eee;
+}
+
+.modal-content h2 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  background: linear-gradient(90deg,#4f46e5,#3b82f6,#9333ea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 8px rgba(79,70,229,0.3);
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+body.dark .setting-item {
+  border-bottom: 1px solid #334155;
+}
+
+.setting-item span {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+body.dark .setting-item span {
+  color: #eee;
+}
+
+/* Responsive */
+@media(max-width: 1200px) {
+  main {
+    padding: 30px;
   }
+  .main-top-section {
+    flex-direction: column;
+    align-items: center;
+  }
+  .prepare-card,
+  .upcoming-events-card {
+    max-width: 100%; /* Allow cards to take full width */
+  }
+  .cards {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+@media(max-width: 992px) {
+  .sidebar {
+    width: 180px; /* Slightly narrower sidebar */
+  }
+  main {
+    margin-left: 180px; /* Adjust main content margin */
+    padding: 25px;
+  }
+  header {
+    padding: 0 15px;
+  }
+  .logo {
+    font-size: 1.5rem;
+  }
+  .header-search-wrapper {
+    padding: 0 10px;
+  }
+  .search-component {
+    max-width: 300px;
+  }
+  .login-btn, .settings-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  .profile-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+  }
+  .footer-links {
+    gap: 2rem;
+  }
+}
+
+@media(max-width:768px){
+  .sidebar {
+    transform:translateX(-100%);
+    width: 100%; /* Full width sidebar on mobile */
+    height: calc(100% - 70px);
+    top: 70px;
+    left: 0;
+    box-shadow: none;
+    border-right: none;
+    z-index: 999;
+  }
+  .sidebar.active {
+    transform:translateX(0);
+  }
+  main {
+    margin-left:0;
+    padding: 20px;
+  }
+  .header-search-wrapper {
+    display: none; /* Hide search on small screens */
+  }
+  .header-actions {
+    gap: 10px;
+  }
+  .login-btn, .settings-btn {
+    padding: 8px 15px;
+    font-size: 0.85rem;
+  }
+  .profile-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.2rem;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    gap: 1rem;
+    top: 15%; /* Adjust position for smaller footer */
+  }
+  .footer-links a {
+    font-size: 0.85rem;
+  }
+  .footer-bottom {
+    margin-top: 80px; /* Adjust margin for smaller footer */
+    font-size: 0.8rem;
+  }
+  #chatFloatingBtn {
+    right: 20px;
+    bottom: 20px;
+    width: 50px;
+    height: 50px;
+  }
+  #chatFloatingBtn span {
+    font-size: 1rem;
+  }
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+  .modal-content h2 {
+    font-size: 1.8rem;
+  }
+  .setting-item span {
+    font-size: 1rem;
+  }
+}
+
+@media(max-width: 480px) {
+  header {
+    height: 60px;
+    padding: 0 10px;
+  }
+  .logo {
+    font-size: 1.3rem;
+  }
+  main {
+    margin-top: 60px;
+    padding: 15px;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  .prepare-card, .upcoming-events-card {
+    padding: 20px;
+  }
+  .prepare-card h3, .upcoming-events-card h3 {
+    font-size: 1.2rem;
+  }
+  .prep-box {
+    padding: 20px;
+  }
+  .prep-box h2 {
+    font-size: 1.5rem;
+  }
+  .prep-box p, .prep-box ul li {
+    font-size: 0.9rem;
+  }
+  .explore-btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+  .cards {
+    gap: 15px;
+  }
+  .card {
+    padding: 18px;
+  }
+  .card h3 {
+    font-size: 1.1rem;
+  }
+  .card p {
+    font-size: 0.9rem;
+  }
+  footer {
+    padding: 70px 10px 30px;
+  }
+  .footer-links {
+    gap: 0.8rem;
+    top: 10%;
+  }
+  .footer-links a {
+    font-size: 0.75rem;
+  }
+  .footer-bottom {
+    margin-top: 60px;
+    font-size: 0.7rem;
+  }
+  #chatFloatingBtn {
+    right: 15px;
+    bottom: 15px;
+    width: 45px;
+    height: 45px;
+  }
+  #chatFloatingBtn span {
+    font-size: 0.9rem;
+  }
+}
 </style>
 </head>
 <body>
@@ -673,7 +1019,7 @@ body.dark #chatFloatingBtn:hover {
     <button class="login-btn" id="dashboardLoginBtn">
       Login
     </button>
-    <div class="mode-toggle" id="modeToggle">☀️</div>
+    <button class="settings-btn" id="settingsBtn">⚙️</button>
   </div>
 </header>
 
@@ -745,6 +1091,33 @@ body.dark #chatFloatingBtn:hover {
   <span style="font-size: 1.1rem; font-weight: 600; color: #fff; letter-spacing: 1px;">chat</span>
 </button>
 
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h2>Settings</h2>
+    <div class="setting-item">
+      <span>Dark Mode</span>
+      <div class="mode-toggle">
+        <input type="checkbox" id="darkModeToggle" class="toggle-switch">
+        <label for="darkModeToggle" class="toggle-label"></label>
+      </div>
+    </div>
+    <div class="setting-item" id="changePasswordSettingItem">
+      <span>Change Password</span>
+      <button class="login-btn" id="changePasswordBtn" style="margin-left: auto;">Change</button>
+    </div>
+    <div class="setting-item" id="updateProfileSettingItem">
+      <span>Update Profile Information</span>
+      <button class="login-btn" id="updateProfileBtn" style="margin-left: auto;">Update</button>
+    </div>
+    <div class="setting-item" id="logoutSettingItem" style="display: none;">
+      <span>Logout</span>
+      <button class="login-btn" id="modalLogoutBtn" style="margin-left: auto;">Logout</button>
+    </div>
+  </div>
+</div>
+
 <!-- Footer -->
 <footer>
   <div class="footer-links" style="margin-bottom: 18px;">
@@ -762,18 +1135,111 @@ body.dark #chatFloatingBtn:hover {
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const dashboardLoginBtn = document.getElementById('dashboardLoginBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsModal = document.getElementById('settingsModal');
+    const closeModal = document.querySelector('.close-button');
+    const darkModeToggle = document.getElementById('darkModeToggle');
     const body = document.body;
+    const logoutSettingItem = document.getElementById('logoutSettingItem');
+    const modalLogoutBtn = document.getElementById('modalLogoutBtn');
 
-    if (dashboardLoginBtn) {
-      dashboardLoginBtn.addEventListener('click', (event) => {
-        event.preventDefault(); // Prevent default navigation
-        // Since the login box is removed, we can redirect or do nothing.
-        // For now, let's redirect to login.html
+    // Function to toggle dark mode
+    const toggleDarkMode = () => {
+      body.classList.toggle('dark');
+      const isDarkMode = body.classList.contains('dark');
+      localStorage.setItem('darkMode', isDarkMode);
+      darkModeToggle.checked = isDarkMode;
+    };
+
+    // Initialize dark mode based on local storage, defaulting to light mode
+    const initializeDarkMode = () => {
+      const isDarkMode = localStorage.getItem('darkMode') === 'true';
+      if (isDarkMode) {
+        body.classList.add('dark');
+        darkModeToggle.checked = true;
+      } else {
+        body.classList.remove('dark');
+        darkModeToggle.checked = false;
+      }
+    };
+
+    initializeDarkMode();
+
+    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+    console.log('Is Logged In:', isLoggedIn); // Debugging line
+
+    if (isLoggedIn) {
+      dashboardLoginBtn.textContent = '👤'; // Professional profile emoji
+      dashboardLoginBtn.classList.remove('login-btn');
+      dashboardLoginBtn.classList.add('profile-btn');
+      dashboardLoginBtn.removeEventListener('click', (event) => {
+        event.preventDefault();
         window.location.href = 'login.html';
       });
+      dashboardLoginBtn.addEventListener('click', () => {
+        window.location.href = 'profile.html'; // Assuming a profile page
+      });
+      logoutSettingItem.style.display = 'flex'; // Show logout option in settings
+      document.getElementById('changePasswordSettingItem').style.display = 'flex';
+      document.getElementById('updateProfileSettingItem').style.display = 'flex';
+    } else {
+      dashboardLoginBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.href = 'login.html';
+      });
+      logoutSettingItem.style.display = 'none'; // Hide logout option
+      document.getElementById('changePasswordSettingItem').style.display = 'none';
+      document.getElementById('updateProfileSettingItem').style.display = 'none';
+    }
+
+    console.log('Change Password Button Element:', document.getElementById('changePasswordBtn')); // Debugging line
+
+    const changePasswordBtn = document.getElementById('changePasswordBtn');
+    const updateProfileBtn = document.getElementById('updateProfileBtn');
+
+    if (changePasswordBtn) {
+      changePasswordBtn.addEventListener('click', () => {
+        settingsModal.style.display = 'none'; // Close modal
+        window.location.href = 'change-password.html';
+      });
+    }
+
+    if (updateProfileBtn) {
+      updateProfileBtn.addEventListener('click', () => {
+        settingsModal.style.display = 'none'; // Close modal
+        window.location.href = 'profile.html';
+      });
+    }
+
+    if (modalLogoutBtn) {
+      modalLogoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('loggedIn');
+        window.location.href = 'dashboard.html'; // Redirect to dashboard after logout
+      });
+    }
+
+    if (settingsBtn) {
+      settingsBtn.addEventListener('click', () => {
+        settingsModal.style.display = 'flex';
+      });
+    }
+
+    if (closeModal) {
+      closeModal.addEventListener('click', () => {
+        settingsModal.style.display = 'none';
+      });
+    }
+
+    window.addEventListener('click', (event) => {
+      if (event.target === settingsModal) {
+        settingsModal.style.display = 'none';
+      }
+    });
+
+    if (darkModeToggle) {
+      darkModeToggle.addEventListener('change', toggleDarkMode);
     }
   });
 </script>
-<script src="dark-mode.js"></script>
 </body>
 </html>
