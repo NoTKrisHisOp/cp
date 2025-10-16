@@ -5,18 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Campus Hire Dashboard</title>
 <style>
+  :root {
+    --bg: #0b1020;
+    --bg-alt: #0e1426;
+    --surface: rgba(255,255,255,0.06);
+    --surface-strong: rgba(255,255,255,0.10);
+    --border: rgba(255,255,255,0.12);
+    --text: #e5e7eb;
+    --muted: #9aa4b2;
+    --accent: #7c3aed;
+    --accent-2: #2563eb;
+    --success: #22c55e;
+    --radius: 14px;
+    --radius-sm: 10px;
+    --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    --shadow-soft: 0 6px 18px rgba(0,0,0,0.25);
+    --glass: blur(10px) saturate(140%);
+  }
   /* Reset & Base */
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    font-family: "Segoe UI", sans-serif;
-    background: linear-gradient(120deg,#e0e7ff,#f5f7fb,#e0f7fa);
-    background-size: 400% 400%;
-    animation: gradientMove 18s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    color:#333;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(124,58,237,0.18), transparent 60%),
+      radial-gradient(1000px 500px at -10% 10%, rgba(37,99,235,0.18), transparent 55%),
+      radial-gradient(600px 400px at 50% 120%, rgba(99,102,241,0.10), transparent 60%),
+      var(--bg);
+    color: var(--text);
     display:flex;
     min-height:100vh;
     flex-direction: column;
-    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1), color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background 0.5s ease, color 0.5s ease;
   }
   a { text-decoration:none; color:inherit; }
   @keyframes gradientMove {
@@ -28,20 +47,19 @@
   /* Header */
   header {
     position:fixed; top:0; left:0; right:0; height:70px;
-    backdrop-filter: blur(12px);
-    background: rgba(255,255,255,0.6);
-    box-shadow:0 4px 20px rgba(0,0,0,0.15);
+    backdrop-filter: var(--glass);
+    background: linear-gradient(180deg, rgba(17,24,39,0.65), rgba(17,24,39,0.35));
+    box-shadow: var(--shadow);
     display:flex; justify-content:space-between; align-items:center;
     padding:0 20px; z-index:1000;
-    border-bottom:1px solid rgba(255,255,255,0.3);
+    border-bottom:1px solid var(--border);
   }
   .logo { 
     display:flex; align-items:center; 
-    font-size:1.7rem; 
-    font-weight:800; 
-    background: linear-gradient(90deg,#4f46e5,#3b82f6,#9333ea);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+    font-size:1.3rem; 
+    font-weight:700; 
+    color: var(--text);
+    letter-spacing: 0.2px;
   }
   .header-actions { display:flex; align-items:center; gap:15px; }
 
@@ -59,20 +77,20 @@
     align-items: center;
     width: 100%;
     max-width: 400px;
-    background: rgba(255,255,255,0.8);
-    border-radius: 25px;
-    padding: 8px 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .search-component:focus-within {
-    box-shadow: 0 4px 15px rgba(79,70,229,0.2);
-    background: #fff;
+    border-color: rgba(124,58,237,0.6);
+    box-shadow: 0 0 0 6px rgba(124,58,237,0.12);
   }
 
   .search-icon {
-    color: #777;
+    color: var(--muted);
     margin-right: 10px;
     font-size: 1.1rem;
   }
@@ -83,7 +101,7 @@
     flex-grow: 1;
     font-size: 1rem;
     background: transparent;
-    color: #333;
+    color: var(--text);
   }
 
   .search-input::placeholder {
@@ -113,39 +131,18 @@
   }
 
   /* Premium Buttons */
-.login-btn {
-  padding: 12px 26px;
-  border: none;
-  border-radius: 30px;
-  background: #ffffff; /* plain white */
-  color: #000000;      /* black text */
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* soft shadow */
-  position: relative;
-  overflow: hidden;
-}
+  .login-btn {
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    color: var(--text);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+  }
 
-.profile-btn { /* New style for profile button */
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #4f46e5, #3b82f6);
-  color: #fff;
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.profile-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-}
+/* profile button removed; account actions live in settings modal */
 
 /* Optional subtle shine effect */
 .login-btn::before {
@@ -161,29 +158,26 @@
   transform: translateX(100%);
 }
 
-.login-btn:hover {
-  transform: scale(1.05);           /* smooth enlargement */
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25); /* slightly deeper shadow */
-  filter: brightness(1.05);          /* subtle brightness effect */
-}
+  .login-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(124,58,237,0.5);
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+  }
 
 /* Settings Button */
 .settings-btn {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 30px;
-  background: #ffffff;
-  color: #000000;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  color: var(--text);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  position: relative;
-  overflow: hidden;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
 }
 
 .settings-btn:hover {
@@ -278,30 +272,29 @@ body.dark .settings-btn:hover {
   .sidebar {
     position:fixed; top:70px; left:0;
     width:220px; height:calc(100% - 70px);
-    backdrop-filter: blur(14px);
-    background:rgba(255,255,255,0.5);
-    border-right:1px solid rgba(255,255,255,0.3);
+    backdrop-filter: var(--glass);
+    background: linear-gradient(180deg, rgba(17,24,39,0.55), rgba(17,24,39,0.35));
+    border-right:1px solid var(--border);
     padding:20px;
     overflow-y:auto;
-    transition:transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+    transition:transform 0.4s ease;
+    box-shadow: var(--shadow-soft);
   }
   .sidebar ul { list-style:none; }
   .sidebar li {
     padding:12px 14px;
     margin:8px 0;
-    border-radius:12px;
+    border-radius: var(--radius-sm);
     cursor:pointer;
     font-weight:500;
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    color: var(--text);
+    transition: background 0.2s ease, transform 0.2s ease;
     position:relative;
     overflow: hidden;
   }
   .sidebar li:hover {
-    background: linear-gradient(135deg, #4f46e5, #3b82f6, #06b6d4);
-    color:#fff;
-    box-shadow:0 4px 15px rgba(79,70,229,0.6);
-    transform:translateX(5px);
+    background: rgba(255,255,255,0.06);
+    transform:translateX(4px);
   }
   .sidebar li::before {
     content: '';
@@ -331,27 +324,26 @@ body.dark .settings-btn:hover {
   h2 { 
     margin:20px 0; 
     font-weight:700;
-    background:linear-gradient(90deg,#4f46e5,#3b82f6,#9333ea);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    text-shadow:0 2px 8px rgba(79,70,229,0.3);
+    color: var(--text);
+    letter-spacing: 0.2px;
   }
 
   /* Prepare Card */
   .prepare-card {
-    background:rgba(255,255,255,0.7);
-    backdrop-filter:blur(14px);
-    padding:25px;
-    border-radius:18px;
-    box-shadow:0 6px 25px rgba(0,0,0,0.15);
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: var(--glass);
+    padding:22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
     flex: 1; /* Allow it to grow */
     min-width: 280px; /* Ensure it doesn't get too small */
     max-width: 400px; /* Limit its max width */
     transition: all 0.4s ease;
   }
   .prepare-card:hover {
-    transform:translateY(-6px) scale(1.02);
-    box-shadow:0 10px 30px rgba(79,70,229,0.4);
+    transform:translateY(-4px);
+    box-shadow: var(--shadow);
   }
 
   /* Main Top Section for Cards */
@@ -364,11 +356,12 @@ body.dark .settings-btn:hover {
 
   /* Upcoming Events Card */
   .upcoming-events-card {
-    background:rgba(255,255,255,0.7);
-    backdrop-filter:blur(12px);
-    padding:25px;
-    border-radius:18px;
-    box-shadow:0 6px 22px rgba(0,0,0,0.1);
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: var(--glass);
+    padding:22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     cursor:pointer;
     position: relative;
@@ -378,17 +371,13 @@ body.dark .settings-btn:hover {
     max-width: 400px; /* Limit its max width */
   }
   .upcoming-events-card:hover {
-    transform:translateY(-10px) scale(1.06); /* Increased lift and scale */
-    box-shadow:0 18px 35px rgba(79,70,229,0.6); /* More prominent shadow */
-
-    color:#fff;
+    transform:translateY(-4px);
+    box-shadow: var(--shadow);
   }
   .upcoming-events-card h3 {
-    font-size: 1.4rem;
+    font-size: 1.15rem;
     margin-bottom: 10px;
-    background:linear-gradient(90deg,#4f46e5,#3b82f6,#9333ea);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+    color: var(--text);
   }
   .upcoming-events-card p {
     font-size: 1rem;
@@ -397,44 +386,46 @@ body.dark .settings-btn:hover {
     line-height: 1.5;
   }
   .upcoming-events-card .view-btn {
-    padding:10px 20px;
-    background:linear-gradient(90deg,#4f46e5,#3b82f6);
-    color:#fff; font-weight:600;
-    border:none; border-radius:20px;
+    padding:10px 14px;
+    background: linear-gradient(180deg, rgba(124,58,237,0.25), rgba(124,58,237,0.15));
+    color: var(--text); font-weight:600;
+    border: 1px solid rgba(124,58,237,0.35); border-radius: var(--radius-sm);
     cursor:pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
   }
   .upcoming-events-card .view-btn:hover {
-    transform: translateY(-2px);
-    box-shadow:0 6px 15px rgba(59,130,246,0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 6px rgba(124,58,237,0.12);
   }
 
   .progress-container {
-    background:rgba(200,200,200,0.4);
-    border-radius:12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
     height:22px;
     overflow:hidden;
     margin:18px 0;
   }
   .progress-bar {
     height:100%; width:0%;
-    background:linear-gradient(90deg,#4f46e5,#3b82f6,#06b6d4);
-    border-radius:12px;
-    transition: width 0.5s ease;
+    background: linear-gradient(90deg, rgba(124,58,237,0.9), rgba(37,99,235,0.9));
+    border-radius: var(--radius-sm);
+    transition: width 0.45s ease;
   }
   .start-btn {
-    padding:12px 22px;
-    background:linear-gradient(90deg,#4f46e5,#3b82f6,#06b6d4);
-    color:#fff; font-weight:600;
-    border:none; border-radius:25px;
+    padding:12px 16px;
+    background: linear-gradient(180deg, rgba(124,58,237,0.25), rgba(124,58,237,0.15));
+    color: var(--text); font-weight:600;
+    border: 1px solid rgba(124,58,237,0.35);
+    border-radius: var(--radius-sm);
     cursor:pointer;
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.25s ease;
     position:relative; overflow:hidden;
   }
   .start-btn:hover { 
-    transform:translateY(-3px) scale(1.05);
-    box-shadow:0 8px 25px rgba(59,130,246,0.5);
-    background:linear-gradient(90deg,#3730a3,#2563eb,#0891b2);
+    transform:translateY(-1px);
+    box-shadow: 0 0 0 6px rgba(124,58,237,0.12);
+    background: linear-gradient(180deg, rgba(124,58,237,0.32), rgba(124,58,237,0.18));
   }
   .start-btn::before {
     content: '';
@@ -459,21 +450,21 @@ body.dark .settings-btn:hover {
     margin-top:35px;
   }
   .card {
-    background:rgba(255,255,255,0.7);
-    backdrop-filter:blur(12px);
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: var(--glass);
     padding:22px;
-    border-radius:18px;
-    box-shadow:0 6px 22px rgba(0,0,0,0.1);
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     cursor:pointer;
     position: relative;
     overflow: hidden;
   }
   .card:hover {
-    transform:translateY(-8px) scale(1.05);
-    box-shadow:0 15px 30px rgba(79,70,229,0.5);
-    background: linear-gradient(135deg, #4f46e5, #3b82f6, #06b6d4);
-    color:#fff;
+    transform:translateY(-4px);
+    box-shadow: var(--shadow);
+    border-color: rgba(124,58,237,0.35);
   }
   .card::before {
     content: '';
@@ -494,10 +485,10 @@ body.dark .settings-btn:hover {
   footer {
     position: relative;
     text-align: center;
-    padding: 90px 20px 45px;
-    backdrop-filter:blur(12px);
-    background:rgba(255,255,255,0.7);
-    box-shadow:0 -4px 15px rgba(0,0,0,0.1);
+    padding: 70px 20px 40px;
+    backdrop-filter: var(--glass);
+    background: linear-gradient(180deg, rgba(17,24,39,0.35), rgba(17,24,39,0.2));
+    border-top: 1px solid var(--border);
   }
   .footer-links {
     display: flex;
@@ -509,15 +500,15 @@ body.dark .settings-btn:hover {
     transform: translate(-50%, -20%);
   }
   .footer-links a {
-    font-size:1rem; font-weight:600;
-    color:#444; position:relative;
-    transition: all 0.3s ease;
+    font-size:0.95rem; font-weight:600;
+    color: var(--muted); position:relative;
+    transition: color 0.2s ease;
   }
   .footer-links a::after {
     content:"";
     position:absolute; bottom:-5px; left:0;
     width:100%; height:3px;
-    background:linear-gradient(90deg,#4f46e5,#3b82f6,#06b6d4);
+    background:linear-gradient(90deg, rgba(124,58,237,0.8), rgba(37,99,235,0.8));
     border-radius:2px;
     transform:scaleX(0);
     transform-origin:right;
@@ -527,10 +518,7 @@ body.dark .settings-btn:hover {
     transform:scaleX(1);
     transform-origin:left;
   }
-  .footer-links a:hover {
-    color:#4f46e5;
-    text-shadow:0px 0px 12px rgba(79,70,229,0.6);
-  }
+  .footer-links a:hover { color: var(--text); }
   .footer-bottom {
     margin-top:130px;
     font-size:0.9rem;
@@ -625,24 +613,23 @@ body.dark .settings-btn:hover {
     box-shadow: 0 8px 25px rgba(99,102,241,0.5);
   }
 
-  /* Dark mode for new card elements */
+  /* Dark mode alignment for Upcoming Events card */
   body.dark .upcoming-events-card:hover {
-    background:linear-gradient(135deg,#0ea5e9,#6366f1,#8b5cf6);
-    box-shadow:0 18px 35px rgba(14,165,233,0.6); /* Dark mode shadow adjustment */
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(14,165,233,0.4);
   }
   body.dark .upcoming-events-card h3 {
-    background:linear-gradient(90deg,#0ea5e9,#6366f1,#8b5cf6);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: var(--text);
   }
-  body.dark .upcoming-events-card p { color: #ccc; }
+  body.dark .upcoming-events-card p { color: var(--muted); }
   body.dark .upcoming-events-card .view-btn {
-    background:linear-gradient(90deg,#0ea5e9,#6366f1);
-    box-shadow: 0 4px 15px rgba(14,165,233,0.3);
+    background: linear-gradient(180deg, rgba(124,58,237,0.25), rgba(124,58,237,0.15));
+    border: 1px solid rgba(124,58,237,0.35);
+    box-shadow: none;
   }
-  body.dark .upcoming-events-card .view-btn:hover {
-    box-shadow: 0 8px 25px rgba(14,165,233,0.5);
-  }
+  body.dark .upcoming-events-card .view-btn:hover { box-shadow: 0 0 0 6px rgba(124,58,237,0.12); }
 
   body.dark .progress-bar { background:linear-gradient(90deg,#0ea5e9,#6366f1,#8b5cf6); }
   body.dark .card:hover { background:linear-gradient(135deg,#0ea5e9,#6366f1,#8b5cf6); }
@@ -734,13 +721,17 @@ body.dark #chatFloatingBtn:hover {
 .modal-content {
   background-color: #fefefe;
   margin: auto;
-  padding: 30px;
+  padding: 0;
   border-radius: 15px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
   width: 90%;
-  max-width: 500px;
+  max-width: 720px;
   position: relative;
   animation: fadeIn 0.3s ease-out;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 420px;
+  overflow: hidden;
 }
 
 body.dark .modal-content {
@@ -748,6 +739,9 @@ body.dark .modal-content {
   color: #eee;
   box-shadow: 0 8px 30px rgba(0,0,0,0.6);
 }
+body.dark .settings-menu { background:#0f172a; border-right: 1px solid #334155; }
+body.dark .menu-item:hover, body.dark .menu-item.active { background: rgba(99,102,241,0.15); }
+body.dark .settings-section h3 { background: linear-gradient(90deg,#0ea5e9,#6366f1,#8b5cf6); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-20px); }
@@ -781,14 +775,20 @@ body.dark .close-button:focus {
   color: #eee;
 }
 
-.modal-content h2 {
-  font-size: 2rem;
-  margin-bottom: 25px;
-  background: linear-gradient(90deg,#4f46e5,#3b82f6,#9333ea);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 8px rgba(79,70,229,0.3);
-}
+/* Settings modal layout */
+.settings-menu { background: #f8fafc; padding: 20px; border-right: 1px solid #e5e7eb; }
+.settings-menu h2 { font-size: 1.25rem; margin-bottom: 10px; color: #111827; }
+.menu-list { list-style: none; }
+.menu-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; cursor:pointer; margin:6px 0; transition: background 0.2s ease; }
+.menu-item:hover, .menu-item.active { background:#eef2ff; }
+.menu-item span.icon { font-size: 1.1rem; }
+
+.settings-content { padding: 24px 28px; }
+.settings-section { display: none; }
+.settings-section.active { display: block; }
+.settings-section h3 { font-size: 1.4rem; margin-bottom: 15px; background: linear-gradient(90deg,#4f46e5,#3b82f6,#9333ea); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.settings-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.settings-actions .login-btn { padding: 10px 16px; }
 
 .setting-item {
   display: flex;
@@ -1092,29 +1092,117 @@ body.dark .setting-item span {
 </button>
 
 <!-- Settings Modal -->
-<div id="settingsModal" class="modal">
+<div id="settingsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
   <div class="modal-content">
-    <span class="close-button">&times;</span>
-    <h2>Settings</h2>
-    <div class="setting-item">
-      <span>Dark Mode</span>
-      <div class="mode-toggle">
-        <input type="checkbox" id="darkModeToggle" class="toggle-switch">
-        <label for="darkModeToggle" class="toggle-label"></label>
+    <span class="close-button" role="button" aria-label="Close settings">&times;</span>
+    <nav class="settings-menu" aria-label="Settings sections">
+      <h2 id="settingsTitle">Settings</h2>
+      <ul class="menu-list">
+        <li class="menu-item active" data-section="general"><span class="icon">1️⃣</span><span>General</span></li>
+        <li class="menu-item" data-section="display"><span class="icon">2️⃣</span><span>Appearance</span></li>
+        <li class="menu-item" data-section="notifications"><span class="icon">3️⃣</span><span>Notifications</span></li>
+        <li class="menu-item" data-section="accessibility"><span class="icon">4️⃣</span><span>Accessibility</span></li>
+        <li class="menu-item" data-section="profile"><span class="icon">5️⃣</span><span>Profile</span></li>
+        <li class="menu-item" data-section="security"><span class="icon">6️⃣</span><span>Security</span></li>
+        <li class="menu-item" data-section="integrations"><span class="icon">7️⃣</span><span>Integrations</span></li>
+        <li class="menu-item" data-section="resume"><span class="icon">8️⃣</span><span>Resume & Documents</span></li>
+        <li class="menu-item" data-section="saved"><span class="icon">9️⃣</span><span>Saved Items</span></li>
+        <li class="menu-item" data-section="data"><span class="icon">🔟</span><span>Data & Export</span></li>
+        <li class="menu-item" data-section="about"><span class="icon">ℹ️</span><span>About & Legal</span></li>
+        <li class="menu-item" data-section="logout"><span class="icon">🚪</span><span>Logout</span></li>
+      </ul>
+    </nav>
+    <section class="settings-content">
+      <div class="settings-section active" id="section-general">
+        <h3>General Settings</h3>
+        <div class="setting-item" id="changePasswordSettingItem">
+          <span>Change Password</span>
+          <button class="login-btn" id="changePasswordBtn" style="margin-left: auto;">Change</button>
+        </div>
       </div>
-    </div>
-    <div class="setting-item" id="changePasswordSettingItem">
-      <span>Change Password</span>
-      <button class="login-btn" id="changePasswordBtn" style="margin-left: auto;">Change</button>
-    </div>
-    <div class="setting-item" id="updateProfileSettingItem">
-      <span>Update Profile Information</span>
-      <button class="login-btn" id="updateProfileBtn" style="margin-left: auto;">Update</button>
-    </div>
-    <div class="setting-item" id="logoutSettingItem" style="display: none;">
-      <span>Logout</span>
-      <button class="login-btn" id="modalLogoutBtn" style="margin-left: auto;">Logout</button>
-    </div>
+
+      <div class="settings-section" id="section-display">
+        <h3>Appearance</h3>
+        <div class="setting-item">
+          <span>Dark Mode</span>
+          <div class="mode-toggle">
+            <input type="checkbox" id="darkModeToggle" class="toggle-switch" aria-label="Toggle dark mode">
+            <label for="darkModeToggle" class="toggle-label"></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section" id="section-profile">
+        <h3>Profile</h3>
+        <div class="setting-item" id="updateProfileSettingItem">
+          <span>Update Profile Information</span>
+          <button class="login-btn" id="updateProfileBtn" style="margin-left: auto;">Update</button>
+        </div>
+      </div>
+
+      <div class="settings-section" id="section-security">
+        <h3>Security</h3>
+        <p>Manage password, 2FA, and active sessions. Sign in required.</p>
+      </div>
+
+      <div class="settings-section" id="section-integrations">
+        <h3>Integrations</h3>
+        <p>Connect Google/Microsoft, calendar sync, GitHub, LeetCode. Sign in required.</p>
+      </div>
+
+      <div class="settings-section" id="section-resume">
+        <h3>Resume & Documents</h3>
+        <p>Manage resumes, cover letters, certificates. Sign in required.</p>
+      </div>
+
+      <div class="settings-section" id="section-saved">
+        <h3>Saved Items</h3>
+        <p>Saved jobs, resources, and bookmarks. Sign in required.</p>
+      </div>
+
+      <div class="settings-section" id="section-data">
+        <h3>Data & Export</h3>
+        <p>Export your data or clear cached data. Sign in required to export.</p>
+      </div>
+
+      <div class="settings-section" id="section-notifications">
+        <h3>Notifications</h3>
+        <div class="setting-item">
+          <span>Email reminders</span>
+          <div>
+            <input type="checkbox" id="notifEmail"> <label for="notifEmail">Enable</label>
+          </div>
+        </div>
+        <div class="setting-item">
+          <span>Event updates</span>
+          <div>
+            <input type="checkbox" id="notifEvents"> <label for="notifEvents">Enable</label>
+          </div>
+        </div>
+        <div class="settings-actions">
+          <button class="login-btn" id="saveNotifBtn">Save</button>
+        </div>
+      </div>
+
+      <div class="settings-section" id="section-accessibility">
+        <h3>Accessibility</h3>
+        <div class="setting-item"><span>Reduce motion</span><div><input type="checkbox" id="a11yReduceMotion"></div></div>
+        <div class="setting-item"><span>High contrast</span><div><input type="checkbox" id="a11yHighContrast"></div></div>
+      </div>
+
+      <div class="settings-section" id="section-about">
+        <h3>About & Legal</h3>
+        <p>Version 1.0.0 • © 2025 Campus Hire • Terms • Privacy</p>
+      </div>
+
+      <div class="settings-section" id="section-logout">
+        <h3>Logout</h3>
+        <div class="setting-item" id="logoutSettingItem" style="display: none;">
+          <span>Logout</span>
+          <button class="login-btn" id="modalLogoutBtn" style="margin-left: auto;">Logout</button>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
 
@@ -1165,32 +1253,33 @@ body.dark .setting-item span {
 
     initializeDarkMode();
 
-    // Assuming not logged in by default for server-side, or check a server-set cookie
-    const isLoggedIn = false;
+    // Determine login state from session storage (fallback to false)
+    const isLoggedIn = sessionStorage.getItem('loggedIn') === 'true';
     console.log('Is Logged In:', isLoggedIn); // Debugging line
 
+    const logoutMenuItem = document.querySelector('.menu-item[data-section="logout"]');
+    const logoutSectionEl = document.getElementById('section-logout');
+
     if (isLoggedIn) {
-      dashboardLoginBtn.textContent = '👤'; // Professional profile emoji
-      dashboardLoginBtn.classList.remove('login-btn');
-      dashboardLoginBtn.classList.add('profile-btn');
-      dashboardLoginBtn.removeEventListener('click', (event) => {
-        event.preventDefault();
-        window.location.href = 'login.html';
-      });
-      dashboardLoginBtn.addEventListener('click', () => {
-        window.location.href = 'profile.html'; // Assuming a profile page
-      });
-      logoutSettingItem.style.display = 'flex'; // Show logout option in settings
+      // Hide Login button when logged in; all account actions live in Settings modal
+      if (dashboardLoginBtn) dashboardLoginBtn.style.display = 'none';
+      logoutSettingItem.style.display = 'flex';
       document.getElementById('changePasswordSettingItem').style.display = 'flex';
       document.getElementById('updateProfileSettingItem').style.display = 'flex';
+      if (logoutMenuItem) logoutMenuItem.style.display = '';
+      if (logoutSectionEl) logoutSectionEl.style.display = '';
     } else {
-      dashboardLoginBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-        window.location.href = 'login.html';
-      });
-      logoutSettingItem.style.display = 'none'; // Hide logout option
+      if (dashboardLoginBtn) {
+        dashboardLoginBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          window.location.href = 'login.html';
+        });
+      }
+      logoutSettingItem.style.display = 'none';
       document.getElementById('changePasswordSettingItem').style.display = 'none';
       document.getElementById('updateProfileSettingItem').style.display = 'none';
+      if (logoutMenuItem) logoutMenuItem.style.display = 'none';
+      if (logoutSectionEl) logoutSectionEl.style.display = 'none';
     }
 
     console.log('Change Password Button Element:', document.getElementById('changePasswordBtn')); // Debugging line
@@ -1207,6 +1296,17 @@ body.dark .setting-item span {
 
     if (updateProfileBtn) {
       updateProfileBtn.addEventListener('click', () => {
+        // If not logged in, prompt to sign in first
+        if (sessionStorage.getItem('loggedIn') !== 'true') {
+          const goLogin = confirm('You need to sign in to update your profile. Do you want to sign in?');
+          settingsModal.style.display = 'none';
+          if (goLogin) {
+            window.location.href = 'login.html';
+          } else {
+            window.location.href = 'dashboard.html';
+          }
+          return;
+        }
         settingsModal.style.display = 'none'; // Close modal
         window.location.href = 'profile.html';
       });
@@ -1222,6 +1322,20 @@ body.dark .setting-item span {
     if (settingsBtn) {
       settingsBtn.addEventListener('click', () => {
         settingsModal.style.display = 'flex';
+        // If logout was active but is hidden (logged out), switch to General
+        const hiddenLogoutActive = document.querySelector('.menu-item[data-section="logout"].active');
+        if (hiddenLogoutActive && hiddenLogoutActive.getBoundingClientRect().width === 0) {
+          const generalItem = document.querySelector('.menu-item[data-section="general"]');
+          const generalSection = document.getElementById('section-general');
+          if (generalItem && generalSection) {
+            document.querySelectorAll('.menu-item').forEach(mi => mi.classList.remove('active'));
+            document.querySelectorAll('.settings-section').forEach(sec => sec.classList.remove('active'));
+            generalItem.classList.add('active');
+            generalSection.classList.add('active');
+          }
+        }
+        const firstActive = document.querySelector('.menu-item.active');
+        if (firstActive && firstActive.focus) firstActive.focus();
       });
     }
 
@@ -1239,6 +1353,198 @@ body.dark .setting-item span {
 
     if (darkModeToggle) {
       darkModeToggle.addEventListener('change', toggleDarkMode);
+    }
+
+    // Settings menu switching
+    const menuItems = Array.from(document.querySelectorAll('.menu-item'));
+    const sections = {
+      general: document.getElementById('section-general'),
+      display: document.getElementById('section-display'),
+      notifications: document.getElementById('section-notifications'),
+      accessibility: document.getElementById('section-accessibility'),
+      profile: document.getElementById('section-profile'),
+      security: document.getElementById('section-security'),
+      integrations: document.getElementById('section-integrations'),
+      resume: document.getElementById('section-resume'),
+      saved: document.getElementById('section-saved'),
+      data: document.getElementById('section-data'),
+      about: document.getElementById('section-about'),
+      logout: document.getElementById('section-logout')
+    };
+    const setActiveSection = (key) => {
+      menuItems.forEach(mi => mi.classList.toggle('active', mi.getAttribute('data-section') === key));
+      Object.entries(sections).forEach(([k, el]) => el && el.classList.toggle('active', k === key));
+    };
+    // Ensure a valid default active section if logout is hidden while logged out
+    if (!isLoggedIn) {
+      const logoutMenuHidden = logoutMenuItem && logoutMenuItem.style.display === 'none';
+      const logoutIsActive = logoutMenuItem && logoutMenuItem.classList.contains('active');
+      if (logoutMenuHidden && logoutIsActive) {
+        setActiveSection('general');
+      }
+    }
+    menuItems.forEach((mi) => {
+      mi.setAttribute('tabindex', '0');
+      mi.addEventListener('click', () => {
+        const key = mi.getAttribute('data-section');
+        const requiresLogin = ['profile','security','integrations','resume','saved','data'].includes(key);
+        if (requiresLogin && sessionStorage.getItem('loggedIn') !== 'true') {
+          const goLogin = confirm('You need to sign in to access Profile. Do you want to sign in?');
+          if (goLogin) {
+            settingsModal.style.display = 'none';
+            window.location.href = 'login.html';
+          } else {
+            settingsModal.style.display = 'none';
+            window.location.href = 'dashboard.html';
+          }
+          return;
+        }
+        setActiveSection(key);
+      });
+      mi.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const key = mi.getAttribute('data-section');
+          const requiresLogin = ['profile','security','integrations','resume','saved','data'].includes(key);
+          if (requiresLogin && sessionStorage.getItem('loggedIn') !== 'true') {
+            const goLogin = confirm('You need to sign in to access Profile. Do you want to sign in?');
+            if (goLogin) {
+              settingsModal.style.display = 'none';
+              window.location.href = 'login.html';
+            } else {
+              settingsModal.style.display = 'none';
+              window.location.href = 'dashboard.html';
+            }
+            return;
+          }
+          setActiveSection(key);
+        }
+      });
+    });
+
+    // Progress bar animation
+    const progressBar = document.getElementById('progressBar');
+    const setProgress = (percent) => {
+      if (!progressBar) return;
+      const clamped = Math.max(0, Math.min(100, percent));
+      progressBar.style.width = clamped + '%';
+    };
+    // Initialize to a saved progress or a default demo value
+    const savedProgress = Number(sessionStorage.getItem('prepProgress'));
+    setProgress(Number.isFinite(savedProgress) ? savedProgress : 68);
+
+    const startBtn = document.getElementById('startBtn');
+    if (startBtn) {
+      startBtn.addEventListener('click', () => {
+        // Simple demo increment and navigate to prep
+        const current = Number(sessionStorage.getItem('prepProgress')) || 68;
+        const next = Math.min(100, current + 8);
+        sessionStorage.setItem('prepProgress', String(next));
+        setProgress(next);
+        window.location.href = 'pseudocode.html';
+      });
+    }
+
+    // Search filter for quick access cards
+    const searchInput = document.getElementById('dashboardSearchInput');
+    const cards = Array.from(document.querySelectorAll('.cards .card'));
+    if (searchInput && cards.length) {
+      const normalize = (s) => s.toLowerCase().trim();
+      searchInput.addEventListener('input', (e) => {
+        const query = normalize(e.target.value || '');
+        cards.forEach((card) => {
+          const text = normalize(card.textContent || '');
+          card.style.display = !query || text.includes(query) ? '' : 'none';
+        });
+      });
+    }
+
+    // Notifications: limited without login
+    const notifEmail = document.getElementById('notifEmail');
+    const notifEvents = document.getElementById('notifEvents');
+    const saveNotifBtn = document.getElementById('saveNotifBtn');
+    if (notifEmail && notifEvents) {
+      // load
+      notifEmail.checked = sessionStorage.getItem('notifEmail') === 'true';
+      notifEvents.checked = sessionStorage.getItem('notifEvents') === 'true';
+    }
+    if (saveNotifBtn) {
+      saveNotifBtn.addEventListener('click', () => {
+        const logged = sessionStorage.getItem('loggedIn') === 'true';
+        if (!logged) {
+          alert('Sign in to save notification preferences. Your choice applies for this session only.');
+        }
+        sessionStorage.setItem('notifEmail', String(!!notifEmail?.checked));
+        sessionStorage.setItem('notifEvents', String(!!notifEvents?.checked));
+      });
+    }
+
+    // Quick Access navigation
+    if (cards.length) {
+      // 0: Aptitude -> pseudocode.html
+      // 1: Coding -> pseudocode.html
+      // 2: Interviews -> pseucode2.html
+      // 3: Resume -> profile.html
+      cards.forEach((card, index) => {
+        card.addEventListener('click', () => {
+          switch (index) {
+            case 0:
+            case 1:
+              window.location.href = 'pseudocode.html';
+              break;
+            case 2:
+              window.location.href = 'pseucode2.html';
+              break;
+            case 3:
+              window.location.href = 'profile.html';
+              break;
+            default:
+              break;
+          }
+        });
+      });
+    }
+
+    // Upcoming events button
+    const upcomingBtn = document.querySelector('.upcoming-events-card .view-btn');
+    if (upcomingBtn) {
+      upcomingBtn.addEventListener('click', () => {
+        // Navigate to a sample resources/company page for now
+        window.location.href = 'TCS.html';
+      });
+    }
+
+    // Sidebar navigation
+    const sidebarItems = Array.from(document.querySelectorAll('aside.sidebar li'));
+    if (sidebarItems.length) {
+      sidebarItems.forEach((item) => {
+        const label = (item.textContent || '').toLowerCase();
+        item.addEventListener('click', () => {
+          if (label.includes('campus placement')) {
+            window.location.href = 'dashboard.html';
+          } else if (label.includes('aptitude')) {
+            window.location.href = 'pseudocode.html';
+          } else if (label.includes('coding')) {
+            window.location.href = 'pseudocode.html';
+          } else if (label.includes('resume')) {
+            window.location.href = 'profile.html';
+          } else if (label.includes('mock interviews')) {
+            window.location.href = 'pseucode2.html';
+          } else if (label.includes('resources')) {
+            window.location.href = 'TCS.html';
+          } else if (label.includes('user dashboard')) {
+            window.location.href = 'profile.html';
+          }
+        });
+      });
+    }
+
+    // Floating chat button behavior
+    const chatBtn = document.getElementById('chatFloatingBtn');
+    if (chatBtn) {
+      chatBtn.addEventListener('click', () => {
+        alert('Chat assistant coming soon. For help, open Settings > Support.');
+      });
     }
   });
 </script>

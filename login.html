@@ -414,13 +414,11 @@
         <input type="email" id="email" placeholder="yourname@gmail.com" required>
         <div class="error-message" id="emailError"></div>
       </div>
-      
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" id="password" placeholder="Enter your password" required>
         <div class="error-message" id="passwordError"></div>
       </div>
-      
       <div class="remember-forgot">
         <div class="remember-me">
           <input type="checkbox" id="remember" class="accent-checkbox">
@@ -428,10 +426,21 @@
         </div>
         <a href="#" class="forgot-password">Forgot Password?</a>
       </div>
-      
       <button type="submit" class="login-btn">Login</button>
     </form>
-    
+    <div style="text-align:center; margin: 20px 0;">
+      <span>or</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+      <button class="login-btn" style="background: #fff; color: #444; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600;" onclick="window.location.href='/auth/google'">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" style="width:20px;vertical-align:middle;">
+        Login with Google
+      </button>
+      <button class="login-btn" style="background: #24292f; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600;" onclick="window.location.href='/auth/github'">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" style="width:20px;vertical-align:middle;filter:invert(1);">
+        Login with GitHub
+      </button>
+    </div>
     <div class="signup-link">
       <p>Don't have an account? <a href="signup.html">Sign up</a></p>
     </div>
